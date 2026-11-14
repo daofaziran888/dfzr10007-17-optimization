@@ -28,6 +28,26 @@ class EntryPayload(BaseModel):
     remark: str | None = None
 
 
+class OrchestrationShard(BaseModel):
+    """图表序列中的一个校验分片：position 是它在原序列里的完成位置。"""
+
+    position: int
+    图表类型: str
+    叙述文本: str
+
+
+class OrchestrationPayload(BaseModel):
+    """一个编排批次：携带批次号与本批要校验的图表分片。"""
+
+    batch_id: str
+    shards: list[OrchestrationShard] = Field(default_factory=list)
+
+
+class OrchestrationResetPayload(BaseModel):
+    """开启新一轮编排时只需批次号；历史叙述版本会按原序列保留。"""
+
+    batch_id: str
+
 
 class MartEntry(BaseModel):
     """集市定义明细结构。"""

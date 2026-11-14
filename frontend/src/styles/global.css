@@ -33,3 +33,26 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .link { border: none; background: none; color: var(--brand); cursor: pointer; padding: 0; }
 .page-foot { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--muted); }
 .error-text { color: #b42318; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; white-space: nowrap; }
+.badge.pending { background: #eef2f7; color: #475569; border: 1px solid var(--border); }
+.badge.valid { background: #e7f6ec; color: #1a7f37; border: 1px solid #a6e0bb; }
+.badge.rejected { background: #fef3e2; color: #b25e09; border: 1px solid #f5cf9b; }
+.badge.abnormal { background: #fde8e8; color: #b42318; border: 1px solid #f3b4b4; }
+.panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-top: 16px; }
+.panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.panel-head h3 { margin: 0 0 4px; font-size: 15px; }
+.panel-head h4, .version-box h4, .excluded-box h4 { margin: 10px 0 6px; font-size: 13px; }
+.batch-form { margin-top: 12px; border-top: 1px dashed var(--border); padding-top: 12px; }
+.form-title { display: block; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+.form-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.narrative-input { flex: 1; min-width: 260px; }
+.batch-message { margin-top: 10px; padding: 8px 10px; background: #f1f5f9; border-radius: 6px; font-size: 12px; color: #334155; }
+.version-box { margin-top: 12px; border-top: 1px dashed var(--border); padding-top: 8px; }
+.version-card { border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; font-size: 12px; }
+.version-card strong { margin-right: 10px; }
+.version-card span { margin-right: 14px; color: var(--muted); }
+.snapshot-list { margin: 6px 0 0; padding-left: 18px; }
+.snapshot-list li { font-size: 12px; margin-bottom: 2px; }
+.excluded-box { margin-top: 12px; background: #fef6f6; border: 1px solid #f3d4d4; border-radius: 6px; padding: 8px 12px; }
+.excluded-box ul { margin: 4px 0; padding-left: 18px; font-size: 12px; color: #7f1d1d; }
+.btn:disabled { opacity: .55; cursor: not-allowed; }

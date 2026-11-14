@@ -73,5 +73,33 @@ npm run dev
 - 列表接口统一返回 `{ items, total, page, size }`，动作接口统一返回 `{ ok, message }`。
 - 状态流转只允许在 `app/services` 里改，路由层不做业务判断。
 
+## 数据故事分批编排与断点恢复
+
+故事模板的图表序列按「分片」逐片校验，STOR-0002 的序列为
+`bar、line、pie、kpi`，其中 `pie` 不在渲染白名单内，用于复现第 3 个图表失败。
+
+- `POST /api/story/{id}/orchestration`：提交一个编排批次 `{ batch_id, shards }`，
+  每个分片带 `position`（原序列完成位置）、`图表类型`、`叙述文本`。批次在首个
+  失败分片中断，完成位置停在失败项之前；重试只能从失败项（下一项）恢复。
+  同一 position 重复到达走幂等分支，不会追加第二份叙述文本快照。
+- 同一模板同时只允许一个批次推进，争用返回 HTTP 409；分片 position 越界返回
+  400；乱序提交作为批次校验失败返回 200 并在 `校验失败` 中给出恢复位置。
+- 分片连续两次校验失败进入「异常隔离」，游标越过它继续处理后续分片；隔离分片
+  不写入叙述快照，也不进入导出。
+- `POST /api/story/{id}/orchestration/reset`：开启新一轮编排，历史叙述版本按原
+  序列归档在 `叙述版本库`，新版本引用新一轮叙述；发布故事时记录
+  `发布叙述版本` 与发布快照。
+- `GET /api/story/{id}/orchestration`：查看分片状态、完成位置与叙述版本库。
+- `GET /api/story/export`：数据故事清单只收录编排完整的故事，按原序列输出叙述
+  分片并点名异常分片；没有完整故事时 `total=0`，`message` 与 `excluded`
+  逐条说明缺失原因。
+
+后端核对脚本（仅依赖标准库，含真实 uvicorn HTTP 链路）：
+
+```bash
+cd backend
+.venv/bin/python -I tests/test_story_orchestration.py
+```
+
 领域：数据工程
 子方向：数仓与数据湖
